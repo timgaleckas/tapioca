@@ -636,7 +636,9 @@ RSpec.describe(Tapioca::Compilers::SymbolTableCompiler) do
           M3 = Module.new
         RUBY
       ).to(
-        eq(<<~RUBY.chomp)
+        # this is a low impact hack to remove differences in Struct behaviour from
+        # ruby 2.4 testing.
+        eq(<<~RUBY.chomp.lines.reject { |line| RUBY_VERSION =~ /^2.4/ && line =~ /self.inspect/ }.join)
           class C1
           end
 
